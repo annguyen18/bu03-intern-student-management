@@ -2,6 +2,8 @@ package com.viettel.intern.service.impl;
 
 import com.viettel.intern.config.locale.Translator;
 import com.viettel.intern.dto.UserDTO;
+import com.viettel.intern.dto.request.UserRegister;
+import com.viettel.intern.dto.request.UserUpdate;
 import com.viettel.intern.entity.base.User;
 import com.viettel.intern.exception.BusinessException;
 import com.viettel.intern.repository.base.UserRepository;
@@ -11,8 +13,12 @@ import com.viettel.intern.ultis.EmailUtil;
 import com.viettel.intern.ultis.SecurityUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,25 +34,45 @@ public class UserServiceImpl implements UserService {
     private final RedisTemplate<String, String> redisTemplate;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Get all user in database
+     *
+     * @return List<User>
+     */
     @Override
     public List<User> getAllUser() {
         return userRepository.findAll();
     }
 
+    /**
+     * Đăng ký người dùng dựa trên đối tượng UserRegister.
+     *
+     * @param userRegister Đối tượng UserRegister chứa thông tin đăng ký người dùng.
+     * @throws BusinessException Nếu email không hợp lệ, email đã tồn tại, hoặc tên người dùng đã tồn tại.
+     */
     @Override
-    public void register(User newUser) { // {"username":"admi3n","password":"1233456","email":"admi_n@gmail", "authorities":["name":"student","status":1]}
-        if (!CommonUtil.isValidEmail(newUser.getEmail())) {
-            throw new BusinessException(Translator.toLocale("email.invalid"));
+    public void register(UserRegister userRegister) {
+        if (SecurityUtil.hasCurrentUserAnyOfAuthorities("admin")) {
+            if (!CommonUtil.isValidEmail(userRegister.getEmail())) {
+                throw new BusinessException(Translator.toLocale("email.invalid"));
+            }
+            if (userRepository.findByEmailIgnoreCase(userRegister.getEmail()) != null) {
+                throw new BusinessException(Translator.toLocale("email.exists"));
+            }
+            if (userRepository.findByUsernameIgnoreCase(userRegister.getUsername()) != null) {
+                throw new BusinessException(Translator.toLocale("username.exists"));
+            }
+            userRegister.setPassword(passwordEncoder.encode(userRegister.getPassword()));
+            User user = new User();
+            user.setUsername(userRegister.getUsername());
+            user.setPassword(userRegister.getPassword());
+            user.setEmail(userRegister.getEmail());
+            user.setAuthorities(userRegister.getAuthorities());
+            user.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
+            userRepository.save(user);
+        } else {
+            throw new BusinessException(Translator.toLocale("user.not-authorized"));
         }
-        if (userRepository.findByEmailIgnoreCase(newUser.getEmail()) != null) {
-            throw new BusinessException(Translator.toLocale("email.exists"));
-        }
-        if (userRepository.findByUsernameIgnoreCase(newUser.getUsername()) != null) {
-            throw new BusinessException(Translator.toLocale("username.exists"));
-        }
-        newUser.setCreatedBy(newUser.getUsername());
-        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        userRepository.save(newUser);
     }
 
     /**
@@ -118,4 +144,46 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+
+    /**
+     * Cập nhật thông tin người dùng dựa trên đối tượng UserUpdate.
+     *
+     * @param userUpdate Đối tượng UserUpdate chứa thông tin cập nhật người dùng.
+     * @throws BusinessException Nếu người dùng không tồn tại hoặc không có quyền truy cập.
+     */
+    @Override
+    public void update(UserUpdate userUpdate) {
+        if(SecurityUtil.hasCurrentUserAnyOfAuthorities("admin")) {
+            User userInDB = userRepository.findByEmailIgnoreCase(userUpdate.getEmail());
+            if (userInDB == null) {
+                throw new BusinessException(Translator.toLocale("user.not-exists"));
+            }
+            userInDB.setEmail(userUpdate.getEmail());
+            userInDB.setStatus(userUpdate.getStatus());
+            userInDB.setAvatar(userUpdate.getAvatar());
+            userInDB.setAuthorities(userUpdate.getAuthorities());
+            userRepository.save(userInDB);
+        } else {
+            throw new BusinessException(Translator.toLocale("user.not-authorized"));
+        }
+    }
+
+    /**
+     * Xóa người dùng theo tên người dùng.
+     *
+     * @param username Tên người dùng cần xóa.
+     * @throws BusinessException Nếu người dùng không tồn tại hoặc không có quyền truy cập.
+     */
+    @Override
+    public void delete(String username) {
+        if (SecurityUtil.hasCurrentUserAnyOfAuthorities("admin")) {
+            User userInDB = userRepository.findByUsernameIgnoreCase(username);
+            if (userInDB == null) {
+                throw new BusinessException(Translator.toLocale("user.not-exists"));
+            }
+            userRepository.delete(userInDB);
+        } else {
+            throw new BusinessException(Translator.toLocale("user.not-authorized"));
+        }
+    }
 }

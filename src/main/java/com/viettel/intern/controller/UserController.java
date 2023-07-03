@@ -3,15 +3,17 @@ package com.viettel.intern.controller;
 
 import com.viettel.intern.config.factory.response.GeneralResponse;
 import com.viettel.intern.config.factory.response.ResponseFactory;
+import com.viettel.intern.dto.request.UserRegister;
+import com.viettel.intern.dto.request.UserUpdate;
 import com.viettel.intern.dto.UserDTO;
-import com.viettel.intern.entity.base.User;
 import com.viettel.intern.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,8 +29,20 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<GeneralResponse<Object>> register(@RequestBody User user) {
+    public ResponseEntity<GeneralResponse<Object>> register(@RequestBody UserRegister user) {
         userService.register(user);
+        return responseFactory.successNoData();
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<GeneralResponse<Object>> update(@RequestBody UserUpdate user) {
+        userService.update(user);
+        return responseFactory.successNoData();
+    }
+
+    @DeleteMapping("/delete/{username}")
+    public ResponseEntity<GeneralResponse<Object>> delete(@PathVariable String username) {
+        userService.delete(username);
         return responseFactory.successNoData();
     }
 
@@ -60,5 +74,4 @@ public class UserController {
         userService.updateProfile(account, userDTO);
         return responseFactory.successNoData();
     }
-
 }
