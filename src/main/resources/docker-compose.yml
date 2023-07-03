@@ -1,0 +1,39 @@
+version: "3"
+services:
+  zookeeper:
+    image: zookeeper
+    restart: always
+    container_name: zookeeper
+    hostname: zookeeper
+    ports:
+      - "2181:2181"
+    environment :
+      ZOO_MY_ID: 1
+
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 192.168.16.104
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+##### Sử dụng 1 trong 2 Kafka ManagerUI dưới đây. Dùng cái nào thì bỏ comment cái đó đi #####
+
+#  kafka-ui-kouncil:
+#    image: consdata/kouncil:latest
+#    container_name: kafka-ui-kouncil
+#    ports:
+#      - "8888:8080"
+#    environment:
+#      bootstrapServers: 192.168.16.104:9092
+#      kouncil.auth.active-provider: inmemory
+#
+#  kafka-ui-redpanda:
+#    image: docker.redpanda.com/redpandadata/console:latest
+#    container_name: kafka-ui-redpanda
+#    ports:
+#      - "9999:8080"
+#    environment:
+#      KAFKA_BROKERS=host.docker.internal:9092:
