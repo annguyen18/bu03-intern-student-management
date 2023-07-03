@@ -35,7 +35,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "USERNAME")
     private String username;
 
-    @JsonIgnore
+//    @JsonIgnore
     @Column(name = "PASSWORD")
     private String password;
 
@@ -50,9 +50,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @ManyToMany
     @JoinTable(
-            name = "user_authority",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "authority_id"))
+        name = "user_authority",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "authority_id"))
     @Column(name = "AUTHORITIES")
     private List<Authority> authorities;
 }
