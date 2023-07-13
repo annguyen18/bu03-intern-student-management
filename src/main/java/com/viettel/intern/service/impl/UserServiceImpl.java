@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(User newUser) { // {"username":"admi3n","password":"1233456","email":"admi_n@gmail", "authorities":["name":"student","status":1]}
+    public void register(User newUser) { // {"username":"admi3n","password":"1233456","email":"admi_n@gmail"}
         if (!CommonUtil.isValidEmail(newUser.getEmail())) {
             throw new BusinessException(Translator.toLocale("email.invalid"));
         }
@@ -40,7 +40,6 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(Translator.toLocale("username.exists"));
         }
         newUser.setCreatedBy(newUser.getUsername());
-        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         userRepository.save(newUser);
     }
 }
