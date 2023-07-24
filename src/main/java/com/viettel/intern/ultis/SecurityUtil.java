@@ -14,7 +14,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -104,6 +106,16 @@ public final class SecurityUtil {
 
     private static Stream<String> getAuthorities(Authentication authentication) {
         return authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority);
+    }
+
+    /**
+     * get current user authorities
+     *
+     * @param authentication
+     * @return list of authorities
+     */
+    public static List<String> getAuthoritiesList(Authentication authentication) {
+        return getAuthorities(authentication).collect(Collectors.toList());
     }
 
     /**
