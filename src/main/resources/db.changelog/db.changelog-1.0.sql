@@ -14,6 +14,7 @@ CREATE TABLE `user` (
                         `password` varchar(255) DEFAULT NULL,
                         `status` int(11) DEFAULT NULL,
                         `username` varchar(255) NOT NULL,
+                        `department_id` bigint(20) default null,
                         PRIMARY KEY (`id`),
                         UNIQUE KEY `username_un` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

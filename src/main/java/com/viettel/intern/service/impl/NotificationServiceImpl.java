@@ -3,21 +3,22 @@ package com.viettel.intern.service.impl;
 import com.viettel.intern.entity.base.Notification;
 import com.viettel.intern.repository.base.NotificationRepository;
 import com.viettel.intern.service.NotificationService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+@AllArgsConstructor
 @Service
 public class NotificationServiceImpl implements NotificationService {
 
-    private final NotificationRepository notificationRepository;
+    private final NotificationRepository repository;
 
-    @Autowired
-    public NotificationServiceImpl(NotificationRepository notificationRepository) {
-        this.notificationRepository = notificationRepository;
+    @Override
+    public void save(Notification notification) {
+        repository.save(notification);
     }
 
     @Override

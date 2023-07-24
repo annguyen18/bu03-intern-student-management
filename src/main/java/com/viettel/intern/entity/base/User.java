@@ -1,6 +1,5 @@
 package com.viettel.intern.entity.base;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,6 +46,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @Column(name = "STATUS")
     private Integer status;
+
+    @Column(name = "DEPARTMENT_ID")
+    private Long departmentId;
 
     @ManyToMany
     @JoinTable(

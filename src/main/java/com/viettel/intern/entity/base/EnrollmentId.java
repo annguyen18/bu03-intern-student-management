@@ -6,19 +6,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.Embeddable;
+import java.io.Serializable;
 
-
-@Table(name = "ENROLLMENT")
+@Embeddable
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class Enrollment {
-    @EmbeddedId
-    private EnrollmentId id;
+public class EnrollmentId implements Serializable {
+    private Long studentId;
+    private Long courseId;
+    // constructors, getters and setters
 }

@@ -1,10 +1,9 @@
--- liquibase formatted sql
--- changeset feature-manh:1.4
 
 -- intern.`classSchedule` definition
-CREATE TABLE `ClassSchedule` (
-                                 `id` BIGINT not null ,
-                                 `dayOfDate` VARCHAR(255),
-                                 `startTime` TIME,
-                                 `endTime` TIME
+CREATE TABLE `Class_Schedule` (
+                                 `ID` BIGINT(20) NOT NULL AUTO_INCREMENT,
+                                 `DAY_OF_WEEK` INT(1) DEFAULT NULL,
+                                 `START_PERIOD` INT(2) DEFAULT NULL,
+                                 `END_PERIOD` INT(2) DEFAULT NULL,
+                                 PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

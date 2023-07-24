@@ -1,6 +1,5 @@
--- liquibase formatted sql
 
---intern.`department` definition
+-- intern.`department` definition
 CREATE TABLE `department`(
                              `department_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
                              `name` VARCHAR(255) NOT NULL,

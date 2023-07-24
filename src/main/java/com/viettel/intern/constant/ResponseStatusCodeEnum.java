@@ -15,4 +15,5 @@ public final class ResponseStatusCodeEnum {
     public static final ResponseStatusCode TOKEN_ERROR = ResponseStatusCode.builder().code("02").httpCode(401).build();
     public static final ResponseStatusCode USERNAME_PASSWORD_ERROR = ResponseStatusCode.builder().code("03").httpCode(401).build();
     public static final ResponseStatusCode INACTIVE_ACCOUNT = ResponseStatusCode.builder().code("04").httpCode(401).build();
+    public static final ResponseStatusCode ACCESS_DENIED = ResponseStatusCode.builder().code("05").httpCode(403).build();
 }

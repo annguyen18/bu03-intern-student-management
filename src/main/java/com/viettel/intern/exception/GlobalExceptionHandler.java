@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -62,6 +63,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({DisabledException.class})
     public final ResponseEntity<Object> handleDisabledException() {
         return this.createResponse(ResponseStatusCodeEnum.INACTIVE_ACCOUNT);
+    }
+
+    @ExceptionHandler({AccessDeniedException.class})
+    public final ResponseEntity<Object> handleAccessDeniedException() {
+        return this.createResponse(ResponseStatusCodeEnum.ACCESS_DENIED);
+    }
+
+    @ExceptionHandler({NullPointerException.class})
+    public final ResponseEntity<Object> handleNullPointerException() {
+        return this.createResponse(ResponseStatusCodeEnum.DATA_NOT_FOUND);
     }
 
     @ExceptionHandler({Exception.class, RuntimeException.class})

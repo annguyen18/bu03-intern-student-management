@@ -45,4 +45,13 @@ public interface UserService {
      * @param userDTO
      */
     void updateProfile(String userName, UserDTO userDTO);
+
+
+    /**
+     * Return the current authenticated user by their ID
+     *
+     * @return The ID of the specified user
+     */
+    Long getCurrentUserId();
+    User findById(Long id);
 }
