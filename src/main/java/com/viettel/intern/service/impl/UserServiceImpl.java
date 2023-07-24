@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(User newUser) { // {"username":"admi3n","password":"1233456","email":"admi_n@gmail"}
+    public void register(User newUser) { // {"username":"admi3n","password":"1233456","email":"admi_n@gmail", "authorities":["name":"student","status":1]}
         if (!CommonUtil.isValidEmail(newUser.getEmail())) {
             throw new BusinessException(Translator.toLocale("email.invalid"));
         }
