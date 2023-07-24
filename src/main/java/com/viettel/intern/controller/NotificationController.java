@@ -19,17 +19,17 @@ public class NotificationController {
     @Autowired
     private NotificationService notificationService;
 
-    @GetMapping("/notifications")
-    public Page<Notification> getNotifications(@RequestParam Optional<String> sortBy,
-                                               @RequestParam Optional<Integer> page,
-                                               @RequestParam Optional<Integer> size,
-                                               @RequestParam(name = "createdDate", required = false)
-                                                   @DateTimeFormat(pattern = "yyyy-MM-dd") Date createdDate) {
-
-        Sort.Direction sortDirection = Sort.Direction.DESC;
-        String sortField = sortBy.orElse("createdDate");
-
-        PageRequest pageable = PageRequest.of(page.orElse(0), size.orElse(10), sortDirection, sortField);
-        return notificationService.findAll(createdDate, pageable);
-    }
+//    @GetMapping("/notifications")
+//    public Page<Notification> getNotifications(@RequestParam Optional<String> sortBy,
+//                                               @RequestParam Optional<Integer> page,
+//                                               @RequestParam Optional<Integer> size,
+//                                               @RequestParam(name = "createdDate", required = false)
+//                                                   @DateTimeFormat(pattern = "yyyy-MM-dd") Date createdDate) {
+//
+//        Sort.Direction sortDirection = Sort.Direction.DESC;
+//        String sortField = sortBy.orElse("createdDate");
+//
+//        PageRequest pageable = PageRequest.of(page.orElse(0), size.orElse(10), sortDirection, sortField);
+//        return notificationService.findAll(createdDate, pageable);
+//    }
 }

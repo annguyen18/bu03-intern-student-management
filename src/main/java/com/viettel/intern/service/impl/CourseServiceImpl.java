@@ -85,7 +85,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Page<CourseDTO> searchCoursesByNameContaining(String keyword, Pageable pageable) {
-        return courseRepository.searchCoursesByNameContaining(keyword, pageable).
+        return courseRepository.findByNameContainingIgnoreCase(keyword, pageable).
                 map(item -> {CourseDTO dto = new CourseDTO();
                     dto.setName(item.getName());
                     dto.setCode(item.getCode());

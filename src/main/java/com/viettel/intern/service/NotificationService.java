@@ -21,6 +21,6 @@ public interface NotificationService {
      * @param createdDate Ngay_tao(createdDate) de loc thong bao (Neu null, khong duoc ap dung).
      * @param pageable Thong tin phan trang va sap xep ket qua tra ve.
      */
-    Page<Notification> findAll(Date createdDate, Pageable pageable);
+//    Page<Notification> findAll(Date createdDate, Pageable pageable);
 }
 

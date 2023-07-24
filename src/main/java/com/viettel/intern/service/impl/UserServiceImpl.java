@@ -1,6 +1,7 @@
 package com.viettel.intern.service.impl;
 
 import com.viettel.intern.config.locale.Translator;
+import com.viettel.intern.config.security.CustomUser;
 import com.viettel.intern.dto.UserDTO;
 import com.viettel.intern.dto.request.UserRegister;
 import com.viettel.intern.dto.request.UserUpdate;
@@ -15,13 +16,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -186,4 +185,24 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(Translator.toLocale("user.not-authorized"));
         }
     }
+
+    @Override
+    public Long getCurrentUserId() {
+        Optional<UserDetails> optional = SecurityUtil.currentUser();
+        Long currentStudentId = null;
+        if(optional.isPresent()) {
+            CustomUser customUser = (CustomUser) optional.get();
+            currentStudentId = customUser.getUserId();
+        }
+        return currentStudentId;
+    }
+
+    @Override
+    public User findById(Long id) {
+
+        Optional<User> userOptional = userRepository.findById(id);
+
+        return userOptional.orElseThrow(EntityNotFoundException::new);
+    }
+
 }

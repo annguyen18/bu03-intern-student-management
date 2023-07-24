@@ -10,5 +10,5 @@ import java.util.Date;
 
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
-    Page<Notification> findByCreatedDate(Date createdDate, Pageable pageable);
+//    Page<Notification> findByCreatedDate(Date createdDate, Pageable pageable);
 }

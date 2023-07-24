@@ -28,13 +28,13 @@ public class AdminController {
      * @param sortBy: sort by which category
      * @param sortOrder: order asc or desc
      */
-    @GetMapping("/courses")
-    public ResponseEntity<GeneralResponse<Object>> getCourses(@RequestParam(defaultValue = "0") int page,
-                                                              @RequestParam(defaultValue = "5") int size,
-                                                              @RequestParam(defaultValue = "name") String sortBy,
-                                                              @RequestParam(defaultValue = "asc") String sortOrder,
-                                                              @RequestParam(defaultValue = "") String keyword) {
-        Page<Course> coursePage = adminService.searchAndSortCourses(keyword, page, size, sortBy, sortOrder);
-        return responseFactory.success(coursePage);
-    }
+//    @GetMapping("/courses")
+//    public ResponseEntity<GeneralResponse<Object>> getCourses(@RequestParam(defaultValue = "0") int page,
+//                                                              @RequestParam(defaultValue = "5") int size,
+//                                                              @RequestParam(defaultValue = "name") String sortBy,
+//                                                              @RequestParam(defaultValue = "asc") String sortOrder,
+//                                                              @RequestParam(defaultValue = "") String keyword) {
+//        Page<Course> coursePage = adminService.searchAndSortCourses(keyword, page, size, sortBy, sortOrder);
+//        return responseFactory.success(coursePage);
+//    }
 }
